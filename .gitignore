@@ -1,0 +1,48 @@
+# Secrets
+.env
+*.key
+*.pem
+
+# Cognee local data (LanceDB + KuzuDB files, can be large)
+cognee_data/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Test / scratch files
+test_cognee.py
+test_ingestion.py
+
+# PDFs and demo papers (too large, potential copyright)
+*.pdf
+demo_papers/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# React / Node
+frontend/node_modules/
+frontend/build/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp

@@ -44,9 +44,17 @@ GRAPH_DB_PATH=./cognee_data
 - [x] Build Streamlit UI ✅
       app.py — sidebar with stats/papers/forget/improve, Upload tab,
       Ask tab with answer cards, sources, concepts, feedback, history
-- [ ] Pre-load 5 real AI papers for demo
-- [ ] Write README
-- [ ] Write blog post
+- [x] Replace with React + FastAPI architecture ✅
+      api.py — 7 FastAPI endpoints, CORS, async, temp file handling
+      frontend/ — React app: Sidebar, UploadZone, QueryPanel, StatsCard
+- [x] Pre-load 5 real AI papers for demo ✅
+      demo_setup.py — downloads, ingests, runs 5 test queries, prints report
+- [x] Write README ✅
+      README.md — full architecture diagram, all 4 Cognee APIs explained,
+      tech stack table, step-by-step run instructions, example queries
+- [x] Write blog post ✅
+      BLOG_DRAFT.md — ~950 words, conversational dev journey, code
+      snippets for all 4 APIs, the env var gotcha, chunking insights
 - [ ] Record Loom demo video
 - [ ] Submit to hackathon
 
@@ -60,10 +68,14 @@ C:\ChronoResearch\
     PROGRESS.md
     attention_is_all_you_need.pdf
     app.py
+    demo_setup.py
+    README.md
+    BLOG_DRAFT.md
     backend\
         __init__.py
         ingestion.py
         memory_engine.py
+    demo_papers\
     venv\
     cognee_data\
 ```
