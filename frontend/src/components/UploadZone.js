@@ -25,11 +25,16 @@ export default function UploadZone({ onUploadComplete }) {
 
     try {
       const { data } = await uploadPaper(file, (pct) => setProgress(pct));
+      console.log("[upload] success response:", data);
       setLastResult(data);
       toast.success(`"${data.paper_name}" added to memory!`, { id: toastId });
       onUploadComplete();
     } catch (e) {
-      const msg = e.response?.data?.detail || "Upload failed";
+      console.error("[upload] error:", e);
+      console.error("[upload] response status:", e.response?.status);
+      console.error("[upload] response data:", e.response?.data);
+      console.error("[upload] message:", e.message);
+      const msg = e.response?.data?.detail || e.message || "Upload failed";
       toast.error(msg, { id: toastId });
     } finally {
       setUploading(false);

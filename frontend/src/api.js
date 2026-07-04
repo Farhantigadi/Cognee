@@ -5,9 +5,14 @@ const api = axios.create({ baseURL: "http://localhost:8000" });
 export const uploadPaper = (file, onProgress) => {
   const form = new FormData();
   form.append("file", file);
+  console.log("[upload] sending file:", file.name, "size:", file.size, "type:", file.type);
   return api.post("/upload", form, {
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: (e) => onProgress && onProgress(Math.round((e.loaded * 100) / e.total)),
+    onUploadProgress: (e) => {
+      const pct = Math.round((e.loaded * 100) / e.total);
+      console.log("[upload] progress:", pct + "%");
+      onProgress && onProgress(pct);
+    },
   });
 };
 

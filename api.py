@@ -1,7 +1,11 @@
+import logging
 import os
 import tempfile
 from pathlib import Path
 from typing import Optional
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("chrono")
 
 from dotenv import load_dotenv
 
@@ -64,24 +68,36 @@ async def health():
 
 @app.post("/upload")
 async def upload(file: UploadFile = File(...)):
+    logger.info("[upload] received: %s | content_type: %s", file.filename, file.content_type)
+
     if not file.filename.endswith(".pdf"):
+        logger.warning("[upload] rejected non-PDF: %s", file.filename)
         raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
 
     contents = await file.read()
+    logger.info("[upload] file size: %d bytes", len(contents))
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         tmp.write(contents)
         tmp_path = tmp.name
+    logger.info("[upload] temp file written: %s", tmp_path)
 
     try:
         result = await ingest_pdf(tmp_path)
+        logger.info("[upload] ingest done: status=%s chunks=%d error=%s",
+                    result.status, result.chunks_ingested, result.error)
+    except Exception as e:
+        logger.exception("[upload] ingest_pdf raised: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         Path(tmp_path).unlink(missing_ok=True)
+        logger.info("[upload] temp file cleaned up")
 
     if result.status == IngestionStatus.FAILED:
         raise HTTPException(status_code=422, detail=result.error)
 
     stats = await get_memory_stats()
+    logger.info("[upload] final stats: %s", stats)
 
     return {
         "paper_name": result.paper_name,
